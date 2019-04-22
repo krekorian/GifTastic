@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>GifTastic</title>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .click-btn {
+            margin: 20px;
+        }
+
+        .gif {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row" style="margin-top: 30px">
+            <div id="button-display" class="col-md-12" style="min-height: 100px">
+            </div>
+        </div>
+        <div class="row">
+            <div id="gif-display" class="col-md-9" style="display: flex ; max-width:1000px;flex-flow: row wrap">
+            </div>
+            <div id="gif-submit" class="col-md-3">
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Add an animal</label>
+                        <input type="text" class="form-control" id="input-gif" aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+
+        var toDoCount = 1;
+
+        $("#submit-button").on("click", function (event) {
+            // prevent form from submitting
+            event.preventDefault();
+
+            var input_value = $("#input-gif").val();
+            console.log(input_value);
+
+            var checkButton = $("<button>");
+            checkButton.attr("id", "item-" + input_value);
+
+            checkButton.attr("data-to-do", input_value);
+            checkButton.attr("class", "checkbox click-btn");
+
+            checkButton.text(input_value);
+
+            $("#button-display").append(checkButton);
+            $(".form-group").find('input:text').val('');
+
+        });
+
+        $(document).on("click", ".click-btn", function () {
+
+            var input_value = $(this).attr("data-to-do");
+            console.log(input_value);
+            var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=f3AceHeKKOJKXDeXnXtlLehoeXfRCwIG&q=" + input_value + "&limit=10&offset=0&rating=G&lang=en";
+            console.log(queryURL);
+
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            })
+                .then(function (response) {
+                    $("#gif-display").empty();
+
+                    var results = response.data;
+
+                    for (var i = 0; i < results.length; i++) {
+                        var gifDiv = $("<div>");
+
+                        var rating = results[i].rating;
+
+                        var p = $("<p>").text("Rating: " + rating);
+
+                        var personImage = $("<img>");
+                        personImage.attr("src", results[i].images.fixed_height_still.url);
+                        personImage.attr("data-still", results[i].images.fixed_height_still.url);
+                        personImage.attr("data-animate", results[i].images.fixed_height.url);
+                        personImage.attr("data-state", "still");
+                        personImage.attr("class", "gif");
+                        gifDiv.prepend(p);
+                        gifDiv.prepend(personImage);
+
+                        $("#gif-display").append(gifDiv);
+                    }
+                });
+        });
+
+
+        $(document).on("click", ".gif", function () {
+            //Grab the state of the gif
+            var state = $(this).attr("data-state");
+            //If the gif is still, animate it, if the gif is animate make it still
+            if (state === "still") {
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
+            } else {
+                $(this).attr("src", $(this).attr("data-still"));
+                $(this).attr("data-state", "still");
+            }
+        });
+
+
+    </script>
+
+</body>
+
+</html>
