@@ -56,18 +56,23 @@
             // prevent form from submitting
             event.preventDefault();
             // define the inputted gif name
+
             var input_value = $("#input-gif").val();
+
+            if (input_value !== "") {
+                var checkButton = $("<button>");
+                checkButton.attr("id", "item-" + input_value);
+                checkButton.attr("data-to-do", input_value);
+                checkButton.attr("class", "checkbox click-btn");
+                // add the name to the button
+                checkButton.text(input_value);
+                // diplay the buttn in the button display area
+                $("#button-display").append(checkButton);
+                $(".form-group").find('input:text').val('');
+            }
             // console.log(input_value);
             // create the button for the inputted GIF add ID, Class and data-to-do criteria
-            var checkButton = $("<button>");
-            checkButton.attr("id", "item-" + input_value);
-            checkButton.attr("data-to-do", input_value);
-            checkButton.attr("class", "checkbox click-btn");
-            // add the name to the button
-            checkButton.text(input_value);
-            // diplay the buttn in the button display area
-            $("#button-display").append(checkButton);
-            $(".form-group").find('input:text').val('');
+
 
         });
         //this code portion define what happens when GIF button is clicked
@@ -94,10 +99,11 @@
                         var rating = results[i].rating;
                         var title = results[i].title;
                         var p = $("<p>").text("Rating: " + rating);
-                        var p_title = $("<p>").text("Title: " + title);
+                        var pTitle = $("<p>").text("Title: " + title);
                         console.log(title);
                         //create image object
                         var gifImage = $("<img>");
+
                         //source link
                         gifImage.attr("src", results[i].images.fixed_height_still.url);
                         //add data still link
@@ -108,7 +114,7 @@
                         gifImage.attr("data-state", "still");
                         //add class to image
                         gifImage.attr("class", "gif");
-                        gifDiv.prepend(p_title);
+                        gifDiv.prepend(pTitle);
                         gifDiv.prepend(p);
                         gifDiv.prepend(gifImage);
                         //desplay the GIF in git-display 
