@@ -57,7 +57,7 @@
             event.preventDefault();
             // define the inputted gif name
             var input_value = $("#input-gif").val();
-            console.log(input_value);
+            // console.log(input_value);
             // create the button for the inputted GIF add ID, Class and data-to-do criteria
             var checkButton = $("<button>");
             checkButton.attr("id", "item-" + input_value);
@@ -74,9 +74,9 @@
         $(document).on("click", ".click-btn", function () {
             //look for the attribute inside data-to-do to add it to API query
             var input_value = $(this).attr("data-to-do");
-            console.log(input_value);
+            // console.log(input_value);
             var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=f3AceHeKKOJKXDeXnXtlLehoeXfRCwIG&q=" + input_value + "&limit=10&offset=0&rating=G&lang=en";
-            console.log(queryURL);
+            // console.log(queryURL);
             //AJAX part
             $.ajax({
                 url: queryURL,
@@ -92,8 +92,10 @@
                         var gifDiv = $("<div>");
 
                         var rating = results[i].rating;
-
+                        var title = results[i].title;
                         var p = $("<p>").text("Rating: " + rating);
+                        var p_title = $("<p>").text("Title: " + title);
+                        console.log(title);
                         //create image object
                         var gifImage = $("<img>");
                         //source link
@@ -106,6 +108,7 @@
                         gifImage.attr("data-state", "still");
                         //add class to image
                         gifImage.attr("class", "gif");
+                        gifDiv.prepend(p_title);
                         gifDiv.prepend(p);
                         gifDiv.prepend(gifImage);
                         //desplay the GIF in git-display 
