@@ -46,8 +46,6 @@
 
     <script>
 
-        var toDoCount = 1;
-
         $("#submit-button").on("click", function (event) {
             // prevent form from submitting
             event.preventDefault();
@@ -91,14 +89,14 @@
 
                         var p = $("<p>").text("Rating: " + rating);
 
-                        var personImage = $("<img>");
-                        personImage.attr("src", results[i].images.fixed_height_still.url);
-                        personImage.attr("data-still", results[i].images.fixed_height_still.url);
-                        personImage.attr("data-animate", results[i].images.fixed_height.url);
-                        personImage.attr("data-state", "still");
-                        personImage.attr("class", "gif");
+                        var gifImage = $("<img>");
+                        gifImage.attr("src", results[i].images.fixed_height_still.url);
+                        gifImage.attr("data-still", results[i].images.fixed_height_still.url);
+                        gifImage.attr("data-animate", results[i].images.fixed_height.url);
+                        gifImage.attr("data-state", "still");
+                        gifImage.attr("class", "gif");
                         gifDiv.prepend(p);
-                        gifDiv.prepend(personImage);
+                        gifDiv.prepend(gifImage);
 
                         $("#gif-display").append(gifDiv);
                     }
